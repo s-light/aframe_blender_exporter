@@ -290,6 +290,7 @@ class AframeExportPanel_PT_Panel(bpy.types.Panel):
             box = row.box()
             box.prop(scene, "s_project_name")
             box.prop(scene, "export_path")
+            box.prop(scene, "export_apply_modifiers")
             box.operator("aframe.clear_asset_dir", text="Clear Assets Directory")
 
         row = layout.row(align=True)
@@ -538,6 +539,12 @@ _props = [
         "Path to the folder containing the files to import",
         "C:/Temp/",
         "FILE_PATH",
+    ),
+    (
+        "bool",
+        "export_apply_modifiers",
+        "apply modifiers",
+        "apply modifieres - this way shapekeys do not work..",
     ),
     ("str", "s_project_name", "Name", "Project's name", "aframe-prj"),
     ("str", "s_output", "output", "output export", "output"),
