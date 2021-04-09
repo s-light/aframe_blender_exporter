@@ -76,7 +76,7 @@ bl_info = {
     "category": "3D View",
 }
 
-script_version = "v" + ".".join([str(x) for x in bl_info.version])
+script_version = "v" + ".".join([str(x) for x in bl_info["version"]])
 
 
 # Need to subclass SimpleHTTPRequestHandler so we can serve cache-busting headers
@@ -474,9 +474,9 @@ class AframeExport_OT_Operator(bpy.types.Operator):
 
     def execute(self, content):
         my_exporter = export_aframe.ExportAframe(
-            skiphidden=self.option_skiphidden, report=self.report,
+            scene=content.scene, report=self.report,
         )
-        return my_exporter.export_aframe()
+        return my_exporter.export()
 
 
 # ------------------------------------------- REGISTER / UNREGISTER
