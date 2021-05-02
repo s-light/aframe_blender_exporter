@@ -296,6 +296,7 @@ class AframeExportPanel_PT_Panel(bpy.types.Panel):
             box.prop(scene, "export_path")
             box.prop(scene, "export_apply_modifiers")
             box.prop(scene, "s_extra_output")
+            box.prop(scene, "e_ressource_set")
             box.operator("aframe.clear_asset_dir", text="Clear Assets Directory")
 
         row = layout.row(align=True)
@@ -559,6 +560,28 @@ _props = [
         "Export aframe scene to a seccond extra File - specify name here",
         "ascene.php",
     ),
+    (
+        "enum",
+        # prop
+        "e_ressource_set",
+        # items,
+        # [(identifier, name, description, icon, number), ...].
+        [
+            ("default", "default", "all ressources"),
+            ("minimal", "minimal", "only the minimal needed ressources"),
+            (
+                "external",
+                "external",
+                "js & other things defined external - only copy files created or embedded",
+            ),
+        ],
+        # name
+        "resources set",
+        # description=""
+        "define set of resources to copy to output folder",
+        # default=None,
+        "default",
+    ),
     ("str", "s_output", "output", "output export", "output"),
     (
         "bool",
@@ -755,6 +778,20 @@ def _reg_str(scene, prop, name, descr, default="", subtype=""):
         )
 
 
+def _reg_enum(scene, prop, items, name, descr, default=""):
+    # bpy.props.EnumProperty(
+    #     items, name="", description="", default=None,
+    #     options={'ANIMATABLE'}, update=None, get=None, set=None
+    # )
+    setattr(
+        scene,
+        prop,
+        bpy.props.EnumProperty(
+            items=items, name=name, description=descr, default=default,
+        ),
+    )
+
+
 def _reg_float(scene, prop, name, descr, default=0.0):
     setattr(
         scene,
@@ -787,6 +824,8 @@ def register():
     for p in _props:
         if p[0] == "str":
             _reg_str(scn, *p[1:])
+        if p[0] == "enum":
+            _reg_enum(scn, *p[1:])
         if p[0] == "bool":
             _reg_bool(scn, *p[1:])
         if p[0] == "float":
