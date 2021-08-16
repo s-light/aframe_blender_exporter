@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 ## [0.0.9] - work in progress
 
 - [NEW] internal "index.html" template is reset after unregistering the add-on (to be sure it's the latest version)
+- refactoring and code cleanup
 
 ## [0.0.8] - 2021-06-15
 - [NEW] Export blender lights
