@@ -1,6 +1,6 @@
 # Blender Exporter to A-Frame VR
 
-This Blender add-on allows you to model your scene in Blender and export it to an A-Frame VR project with a single click. 
+This Blender add-on allows you to model your scene in Blender and export it to an A-Frame VR project with a single click.
 The generated sources can be modified manually according to your project needs and can use a baking process to use baked Lightmaps.
 
 This is an open source project under MIT terms, so feel free to email me or ask for a pull request, or just offer me a coffe!
@@ -80,7 +80,7 @@ For further instructions, see the official [project page](https://silverslade.it
 ### Main UI configuration
 
 Main Ui for the current version 0.0.7.
-For a better usability, the add-on is divided into 6 main panels: 
+For a better usability, the add-on is divided into 6 main panels:
 + A-frame
 + Renderer
 + Player
@@ -97,17 +97,17 @@ For a better usability, the add-on is divided into 6 main panels:
 
 | Property       | Description      | Default Value                          |
 |----------------|------------------|----------------------------------|
-| A-Frame | A-Frame Version  | `1.2.0` | 
-| Show Stats | Show the A-Frame stats window. For debug purpose.  | `False`| 
-| Show Joystick | Show a icon controller to move player  | `False` | 
-| Enable VR Controllers (HTC, Quest) | Enable Controllers for further inteactions  | `False` | 
-| Cube Env Map | For skybox reflections (but not objects reflections). To get objects reflections also, enable the `Camera Cube Env` | `False` | 
-| Camera Cube Env | with objects reflections | `False` | 
-| Show Enviroment Sky | Activate a default skybox | `False` | 
-| Enable Background | Camera cube env with background sky | `False` | 
-| Path | directory path for the equirectangular sky  | `/env/` | 
-| Ext | with objects reflections | `jpg` | 
-| Cast Shadows | For dynamic lights and shadows.| `False` | 
+| A-Frame | A-Frame Version  | `1.2.0` |
+| Show Stats | Show the A-Frame stats window. For debug purpose.  | `False`|
+| Show Joystick | Show a icon controller to move player  | `False` |
+| Enable VR Controllers (HTC, Quest) | Enable Controllers for further inteactions  | `False` |
+| Cube Env Map | For skybox reflections (but not objects reflections). To get objects reflections also, enable the `Camera Cube Env` | `False` |
+| Camera Cube Env | with objects reflections | `False` |
+| Show Enviroment Sky | Activate a default skybox | `False` |
+| Enable Background | Camera cube env with background sky | `False` |
+| Path | directory path for the equirectangular sky  | `/env/` |
+| Ext | with objects reflections | `jpg` |
+| Cast Shadows | For dynamic lights and shadows.| `False` |
 
 #### Renderer Panel
 
@@ -117,9 +117,9 @@ For a better usability, the add-on is divided into 6 main panels:
 
 | Property       | Description      | Default Value                          |
 |----------------|------------------|----------------------------------|
-| Antialiasing | A-Frame's Scene Setting | `True` | 
-| Color Management | A-Frame's Scene Setting | `True` | 
-| Physically Correct Lights | A-Frame's Scene Setting  | `True` | 
+| Antialiasing | A-Frame's Scene Setting | `True` |
+| Color Management | A-Frame's Scene Setting | `True` |
+| Physically Correct Lights | A-Frame's Scene Setting  | `True` |
 
 #### Player Panel
 
@@ -129,11 +129,11 @@ For a better usability, the add-on is divided into 6 main panels:
 
 | Property       | Description      | Default Value                          |
 |----------------|------------------|----------------------------------|
-| Enable Raycast | Activate a raycast for interactions. You can set length and interval values | `False` | 
-| Raycast Length | Set the Length of the raycast. Shorter or turned off is for better performance | `4.0` | 
-| Raycast Interval | Set the polling interval in msec. Higher is for better performance  | `2000.0` | 
-| Player Height | Set the Height of the main camera | `1.70` | 
-| Player Speed | Set the Speed of the player | `0.1` | 
+| Enable Raycast | Activate a raycast for interactions. You can set length and interval values | `False` |
+| Raycast Length | Set the Length of the raycast. Shorter or turned off is for better performance | `4.0` |
+| Raycast Interval | Set the polling interval in msec. Higher is for better performance  | `2000.0` |
+| Player Height | Set the Height of the main camera | `1.70` |
+| Player Speed | Set the Speed of the player | `0.1` |
 
 #### Interactive/Action Panel
 
@@ -143,11 +143,11 @@ For a better usability, the add-on is divided into 6 main panels:
 
 | Property       | Description      | Default Value                          |
 |----------------|------------------|----------------------------------|
-| Add Cubemap | Enable the reflections for the selected object  |  | 
-| Add Rotation on Z | Enable rotation animation on Z axis for the selected object  |  | 
-| Add Toggle Images | set 2 images toggling with click on the selected object (plane mesh)  |  | 
-| Add Link Web | Enable html link when clicking on the selected object  |  | 
-| Add Video | set a mp4 video for the selected object  (plane mesh) |  | 
+| Add Cubemap | Enable the reflections for the selected object  |  |
+| Add Rotation on Z | Enable rotation animation on Z axis for the selected object  |  |
+| Add Toggle Images | set 2 images toggling with click on the selected object (plane mesh)  |  |
+| Add Link Web | Enable html link when clicking on the selected object  |  |
+| Add Video | set a mp4 video for the selected object  (plane mesh) |  |
 
 #### Create Lightmaps Panel
 
@@ -157,12 +157,12 @@ For a better usability, the add-on is divided into 6 main panels:
 
 | Property       | Description      | Default Value                          |
 |----------------|------------------|----------------------------------|
-| Use Lightmapper Add-on for bake lightmaps | If checked the generated lightmaps will be used for the meshes| `False` | 
-| 0 "Delete all Lightmaps" | clear memory and files lightmaps |  | 
-| 1 "Prepare Selection for Lightmapper" | select objects for bake and set Lightmapper configuration| WIP  | 
-| 2 "Bake with Lightmapper" | Bake with the Lightmapper add-on | (wait the end of the process, better is toggle on Window -> System Console) | 
-| 3 "Save Lightmaps" | all lightmaps will be copied inside a "lightmaps" directory in the target project |  | 
-| 4 "Clean Lightmaps | it's needed because the changes to the shaders can be incompatible with A-Frame |  | 
+| Use Lightmapper Add-on for bake lightmaps | If checked the generated lightmaps will be used for the meshes| `False` |
+| 0 "Delete all Lightmaps" | clear memory and files lightmaps |  |
+| 1 "Prepare Selection for Lightmapper" | select objects for bake and set Lightmapper configuration| WIP  |
+| 2 "Bake with Lightmapper" | Bake with the Lightmapper add-on | (wait the end of the process, better is toggle on Window -> System Console) |
+| 3 "Save Lightmaps" | all lightmaps will be copied inside a "lightmaps" directory in the target project |  |
+| 4 "Clean Lightmaps | it's needed because the changes to the shaders can be incompatible with A-Frame |  |
 
 
 #### Exporter Panel
@@ -173,9 +173,9 @@ For a better usability, the add-on is divided into 6 main panels:
 
 | Property       | Description      | Default Value                          |
 |----------------|------------------|----------------------------------|
-| Name | Project name. It's the target directory where your project will be created. | `aframe-prj`       | 
-| Export To | Target Directory where the `Name` Directory will be created | `C:/temp/` | 
-| Clear Assets Directory | To remove old 3d models from the main assets dir |  | 
+| Name | Project name. It's the target directory where your project will be created. | `aframe-prj`       |
+| Export To | Target Directory where the `Name` Directory will be created | `C:/temp/` |
+| Clear Assets Directory | To remove old 3d models from the main assets dir |  |
 
 ### The Lightmapper Add-on
 
@@ -186,7 +186,7 @@ The Lightmapper Add-on is an open source Blender Add-on project for an incredibl
 To use the Lightmapper for baking lightmaps:
 
 + Install the Add-on from [Here](https://github.com/Naxela/The_Lightmapper)
-+ Install and configure the denoise and opencv 
++ Install and configure the denoise and opencv
 + Untick the "Cast Shadows" option
 + Open the "Bake" panel and follow the enumerated buttons
 + 0 "Delete all Lightmaps"
