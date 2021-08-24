@@ -3,7 +3,7 @@
 ## TODO
 - click to show/hide a 3D object
 - click to toogle a 3D object
-- 
+-
 
 ## CHANGELOG
 
@@ -19,13 +19,15 @@ All notable changes to this project will be documented in this file.
 - [NEW] UI refactoring
 - [NEW] Added ThreeJS/Aframe Render settings: antialias, colorManagement, physicallyCorrectLights
 - [NEW] Integrated Bake Process thanks to [@anfeo](https://github.com/anfeo)
+- [FIX] Python Code Refactoring, thanks to [@s-light](https://github.com/s-light)
+- [NEW] Added ThreeJS/Aframe Render settings: maxCanvasWidth, maxCanvasHeight, thanks to [@s-light](https://github.com/s-light)
 
 ## [0.0.6] - 2020-08-01
 
 - [NEW] index.html template saved inside blend file after the first export, thanks to [@coderofsalvation](https://github.com/coderofsalvation)
 - [NEW] UI Layout refactored
 - [NEW] Better Panel to use Lightmapper's bake
-- [NEW] Add object actions: 
+- [NEW] Add object actions:
     - Rotation360: rotate on Z axis an object
     - LinkUrl: add a html link when click on object
     - VideoPlay: add a video on plane object (it needs a mp4 file inside "media" directory)
@@ -61,5 +63,3 @@ All notable changes to this project will be documented in this file.
 ## [0.0.1] - 2020-07-11
 
 - [NEW] Initial commit
-
-
