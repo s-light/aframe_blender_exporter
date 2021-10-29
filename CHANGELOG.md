@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - [NEW] Integrated Bake Process thanks to [@anfeo](https://github.com/anfeo)
 - [FIX] Python Code Refactoring, thanks to [@s-light](https://github.com/s-light)
 - [NEW] Added ThreeJS/Aframe Render settings: maxCanvasWidth, maxCanvasHeight, thanks to [@s-light](https://github.com/s-light)
+- [NEW] Added a-sky settings: geometry.segmentsWidth, geometry.segmentsHeight, thanks to [@s-light](https://github.com/s-light)
 
 ## [0.0.6] - 2020-08-01
 
