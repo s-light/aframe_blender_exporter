@@ -496,7 +496,7 @@ class AframeExport_OT_Operator(bpy.types.Operator):
 
 # ------------------------------------------- REGISTER / UNREGISTER
 _props = [
-    ("str", "s_aframe_version", "A-Frame version", "A-Frame version", "1.0.4"),
+    ("str", "s_aframe_version", "A-Frame version", "A-Frame version", "1.3.0"),
     ("bool", "b_stats", "Show Stats", "Enable rendering stats in game"),
     (
         "bool",
@@ -531,7 +531,7 @@ _props = [
         "GLTF Models don't have lightmaps: "
         + "turn on this option will save lightmaps to Ambient Occlusion in the GLTF models",
     ),
-    ("float", "f_player_speed", "Player Speed", "Player Speed", 0.1),
+    ("float", "f_player_speed", "Player Speed", "Player Speed", 0.2),
     (
         "float",
         "f_raycast_length",
@@ -551,7 +551,7 @@ _props = [
         "export_path",
         "Export To",
         "Path to the folder containing the files to import",
-        "C:/Temp/",
+        ".",
         "FILE_PATH",
     ),
     (
@@ -609,7 +609,7 @@ _props = [
     ("bool", "b_camera_cube", "Camera Cube Env", "Enable Camera Cube Env component"),
     ("float", "f_player_height", "Player Height", "Player Height", 1.7),
     ("bool", "b_raycast", "Enable Raycast", "Enable Raycast"),
-    ("bool", "b_show_env_sky", "Show Environment Sky", "Show Environment Sky"),
+    ("bool", "b_show_env_sky", "Show Environment Sky", "Show Environment Sky", True),
     (
         "int",
         "b_skySegmentsHeight",
