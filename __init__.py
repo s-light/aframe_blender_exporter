@@ -67,10 +67,10 @@ from . import export_aframe
 
 bl_info = {
     "name": "Import-Export: a-frame webvr exporter",
-    "author": "Alessandro Schillaci",
+    "author": "Alessandro Schillaci, Stefan Krüger",
     "description": "Blender Exporter to AFrame WebVR application",
-    "blender": (2, 83, 0),
-    "version": (0, 1, 1),
+    "blender": (3, 1, 0),
+    "version": (0, 2, 1),
     "location": "View3D",
     "warning": "",
     "category": "3D View",
