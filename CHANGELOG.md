@@ -12,6 +12,16 @@ All notable changes to this project will be documented in this file.
 - NEW = New Feature
 - FIX = Bug Fix
 
+## [0.0.??] work in progress
+- [FIX] Python Code Refactoring, thanks to [@s-light](https://github.com/s-light)
+- [NEW] Added ThreeJS/Aframe Render settings: maxCanvasWidth, maxCanvasHeight, thanks to [@s-light](https://github.com/s-light)
+- [NEW] Added a-sky settings: geometry.segmentsWidth, geometry.segmentsHeight, thanks to [@s-light](https://github.com/s-light)
+- [NEW] Tweaked export: replicate blender collection/object tree as grouping entities, thanks to [@s-light](https://github.com/s-light)
+- [NEW] Added additional *free-form* template, thanks to [@s-light](https://github.com/s-light)
+- [NEW] Added resource set options, thanks to [@s-light](https://github.com/s-light)
+- [NEW] Added export_apply_modifiers, thanks to [@s-light](https://github.com/s-light)
+
+
 ## [0.0.7] work in progress
 
 - [NEW] AFRAME_HTTP_LINK: add a link web text field
@@ -19,9 +29,6 @@ All notable changes to this project will be documented in this file.
 - [NEW] UI refactoring
 - [NEW] Added ThreeJS/Aframe Render settings: antialias, colorManagement, physicallyCorrectLights
 - [NEW] Integrated Bake Process thanks to [@anfeo](https://github.com/anfeo)
-- [FIX] Python Code Refactoring, thanks to [@s-light](https://github.com/s-light)
-- [NEW] Added ThreeJS/Aframe Render settings: maxCanvasWidth, maxCanvasHeight, thanks to [@s-light](https://github.com/s-light)
-- [NEW] Added a-sky settings: geometry.segmentsWidth, geometry.segmentsHeight, thanks to [@s-light](https://github.com/s-light)
 
 ## [0.0.6] - 2020-08-01
 
