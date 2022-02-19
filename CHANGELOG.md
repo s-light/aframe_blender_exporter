@@ -18,8 +18,10 @@ All notable changes to this project will be documented in this file.
 - [NEW] Added a-sky settings: geometry.segmentsWidth, geometry.segmentsHeight, thanks to [@s-light](https://github.com/s-light)
 - [NEW] Tweaked export: replicate blender collection/object tree as grouping entities, thanks to [@s-light](https://github.com/s-light)
 - [NEW] Added additional *free-form* template, thanks to [@s-light](https://github.com/s-light)
+- [NEW] Added magic_comments (regex substitute after template filling), thanks to [@s-light](https://github.com/s-light)
 - [NEW] Added resource set options, thanks to [@s-light](https://github.com/s-light)
 - [NEW] Added export_apply_modifiers, thanks to [@s-light](https://github.com/s-light)
+- [FIX] visibility handling, thanks to [@s-light](https://github.com/s-light)
 
 
 ## [0.0.7] work in progress
