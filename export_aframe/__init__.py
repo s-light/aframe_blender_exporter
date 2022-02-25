@@ -94,7 +94,7 @@ class ExportAframe(object):
             "PartDesign::CoordinateSystem",
         ]
 
-        self.scalefactor = 2
+        self.scalefactor = 1
 
         self.line_indent_spacer = "    "
         self.line_indent_level = 0
@@ -108,6 +108,8 @@ class ExportAframe(object):
         # if hasattr(scene, "b_float_precision_min"):
         #     self.float_precision_min = scene.b_float_precision_min
 
+    ##########################################
+    # debug output handling
     @property
     def line_indent(self):
         return self.line_indent_spacer * self.line_indent_level
@@ -131,6 +133,8 @@ class ExportAframe(object):
             report=self.report_obj,
         )
 
+    ##########################################
+    # templates
     def create_default_template(self):
         """Index html a-frame template."""
         if not bpy.data.texts.get("index.html"):
@@ -431,6 +435,8 @@ ${entity}
 
         return filename
 
+    ##########################################
+    # output preparations
     def create_diretories(self):
         ALL_PATHS = [
             ".",
@@ -446,6 +452,8 @@ ${entity}
             print("--- DEST [%s] [%s] {%s}" % (self.base_path, dp, p))
             os.makedirs(dp, exist_ok=True)
 
+    ##########################################
+    # resources
     def add_resouce(
         self,
         dest_path,
@@ -802,26 +810,31 @@ ${entity}
         return gltf_name
 
     def get_object_coordinates(self, obj):
-        actualposition = "0 0 0"
-        actualrotation = "0 0 0"
-        actualscale = "1 1 1"
+        transforms = {
+            "location": "0 0 0",
+            "rotation": "0 0 0",
+            "scale": "1 1 1",
+        }
         if hasattr(obj, "location"):
             apply_parent_inverse(obj)
 
             # bpy.ops.object.origin_set(type='ORIGIN_CENTER_OF_MASS', center='BOUNDS')
             # bpy.ops.object.origin_set(type="ORIGIN_GEOMETRY")
             location = obj.location.copy()
-            actualposition = "{x} {z} {y}".format(
+            transforms["location"] = "{x} {z} {y}".format(
                 x=self.format_float(location.x),
                 z=self.format_float(location.z),
                 y=self.format_float(-location.y),
             )
 
-            actualscale = "{x} {z} {y}".format(
+            transforms["scale"] = "{x} {z} {y}".format(
                 x=self.format_float(self.scalefactor * obj.scale.x),
                 z=self.format_float(self.scalefactor * obj.scale.z),
                 y=self.format_float(self.scalefactor * obj.scale.y),
             )
+            # print(self.line_indent + "* scale calculation:")
+            # print(self.line_indent + "  - scalefactor: {}".format(self.scalefactor))
+            # print(self.line_indent + "  - scale.x: {}".format(obj.scale.x))
 
             # first reset rotation_mode to QUATERNION (otherwise it can have buggy side-effects)
             obj.rotation_mode = "QUATERNION"
@@ -830,16 +843,16 @@ ${entity}
             rotation = obj.rotation_euler.copy()
             # https://aframe.io/docs/1.2.0/components/rotation.html#sidebar
             # pi = 22.0/7.0
-            actualrotation = "{x} {z} {y}".format(
+            transforms["rotation"] = "{x} {z} {y}".format(
                 x=self.format_float(math.degrees(rotation.x)),
                 z=self.format_float(math.degrees(rotation.z)),
                 y=self.format_float(math.degrees(-rotation.y)),
             )
 
-        # print(self.line_indent + "* actualposition", actualposition)
-        # print(self.line_indent + "* actualrotation", actualrotation)
-        # print(self.line_indent + "* actualscale", actualscale)
-        return actualposition, actualrotation, actualscale
+        # print(self.line_indent + "* transforms[location]", transforms["location"])
+        # print(self.line_indent + "* transforms[scale]", transforms["scale"])
+        # print(self.line_indent + "* transforms[rotation]", transforms["rotation"])
+        return transforms
 
     def handle_propertie_video(self, *, prop, obj):
         attributes = []
@@ -893,9 +906,7 @@ ${entity}
         self.imagecount = self.imagecount + 1
         return attributes
 
-    def handle_custom_propertie(
-        self, *, prop, obj, actualscale, actualposition, actualrotation
-    ):
+    def handle_custom_propertie(self, *, prop, obj):
         # custom aframe code read from CUSTOM PROPERTIES
         custom_attributes = []
         # print( "\n", K , "-" , obj[K], "\n" )
@@ -983,12 +994,97 @@ ${entity}
             )
         return gltf_name
 
-    def export_entity_prepare(self, *, obj, entity_attributes):
+    def export_type_MESH(self, obj, entity_attributes, transforms, lines):
+        entity_content = ""
+        if not self.print_only:
+            # print(self.line_indent + "entity_attributes:", entity_attributes)
+            gltf_name = self.export_object(
+                obj=obj,
+                entity_attributes=entity_attributes,
+                mesh_name=obj.data.name,
+            )
+            # print(self.line_indent + "entity_attributes:", entity_attributes)
+        lines.append(self.line_indent + "MESH  gltf_name:'{}'".format(gltf_name))
+        return entity_content
+
+    def export_type_ARMATURE(self, obj, entity_attributes, transforms, lines):
+        lines.append(self.line_indent + "ARMATURE")
+        entity_content = ""
+        if obj.constraints:
+            # constraints = iter(obj.constraints)
+            # while (constraint := next(constraints, None)) is not None:
+            for constraint in obj.constraints:
+                if constraint.type == "FOLLOW_PATH":
+                    # reset transforms -
+                    # the FOLLOW_PATH constraints means some tweaks here...
+                    # or at least we hope that the path was baked to an action..
+                    transforms["location"] = "0 0 0"
+                    transforms["rotation"] = "0 0 0"
+                    transforms["scale"] = "1 1 1"
+        # gltf_name = self.export_object(
+        #     obj=obj,
+        #     entity_attributes=entity_attributes,
+        #     mesh_name=obj.name,
+        # )
+        # if obj.animation_data:
+        #     gltf_name = self.export_object(
+        #         obj=obj,
+        #         entity_attributes=entity_attributes,
+        #         mesh_name=obj.name,
+        #     )
+        if obj.children:
+            lines.append(self.line_indent + "process ARMATURE childs..")
+            # print(self.line_indent + " PING")
+            self.line_indent_level_in()
+            self.select_objects_recusive(obj)
+            gltf_name = self.export_object(
+                obj=obj,
+                entity_attributes=entity_attributes,
+                mesh_name=obj.name,
+            )
+            self.deselect_objects_recusive(obj)
+            lines.append(self.line_indent + "gltf: '{}'".format(gltf_name))
+            # entity_content_temp, lines_temp = self.traverse_objects(
+            #     obj.children,
+            #     allow_childs=True,
+            # )
+            # lines.extend(lines_temp)
+            # entity_content += entity_content_temp
+            self.line_indent_level_out()
+        return entity_content
+
+    def export_type_EMPTY(self, obj, entity_attributes, transforms, lines):
+        lines.append(self.line_indent + "empty '{}'".format(obj.name))
+        entity_content = ""
+        if obj.animation_data:
+            if not self.print_only:
+                gltf_name = self.export_object(
+                    obj=obj,
+                    entity_attributes=entity_attributes,
+                    mesh_name=obj.name,
+                )
+                lines.append(self.line_indent + "gltf: '{}'".format(gltf_name))
+        # check for children
+        if obj.children:
+            self.line_indent_level_in()
+            entity_content_temp, lines_temp = self.traverse_objects(
+                obj.children,
+                allow_childs=True,
+            )
+            lines.extend(lines_temp)
+            entity_content += entity_content_temp
+            self.line_indent_level_out()
+        elif obj.instance_type is not None:
+            lines.append(self.line_indent + "EMPTY - instance")
+            if not self.print_only:
+                self.export_object(obj=obj, entity_attributes=entity_attributes)
+        return entity_content
+
+    def export_entity_prepare(self, *, obj, entity_attributes, transforms):
         # print(
         #     self.line_indent + "'export_entity_prepare' - entity_attributes:",
         #     entity_attributes,
         # )
-        actualposition, actualrotation, actualscale = self.get_object_coordinates(obj)
 
         for prop in obj.keys():
             if prop not in "_RNA_UI":
@@ -996,9 +1092,6 @@ ${entity}
                 prop_custom_attributes = self.handle_custom_propertie(
                     prop=prop,
                     obj=obj,
-                    actualscale=actualscale,
-                    actualposition=actualposition,
-                    actualrotation=actualrotation,
                 )
                 entity_attributes.extend(prop_custom_attributes)
         shadow_cast = "false"
@@ -1012,9 +1105,12 @@ ${entity}
         # replace placeholders with values
         entity_str = entity_str.format(
             obj_name=obj_name,
-            position=actualposition,
-            rotation=actualrotation,
+            position=transforms["location"],
+            rotation=transforms["rotation"],
+            # scale=transforms["scale"],
             scale="1 1 1",
+            # TODO: Why is there a fixed scale of 1?
+            # is there any place the object scale factore is really used?
             shadow_cast=shadow_cast,
         )
         return entity_str
@@ -1039,73 +1135,20 @@ ${entity}
         # prepare
         entity_attributes = []
         entity_content = ""
+        transforms = self.get_object_coordinates(obj)
 
         if obj.type == "MESH":
-            if not self.print_only:
-                # print(self.line_indent + "entity_attributes:", entity_attributes)
-                gltf_name = self.export_object(
-                    obj=obj,
-                    entity_attributes=entity_attributes,
-                    mesh_name=obj.data.name,
-                )
-                # print(self.line_indent + "entity_attributes:", entity_attributes)
-            lines.append(self.line_indent + "MESH  gltf_name:'{}'".format(gltf_name))
+            entity_content += self.export_type_MESH(
+                obj, entity_attributes, transforms, lines
+            )
         elif obj.type == "ARMATURE":
-            lines.append(self.line_indent + "ARMATURE")
-            # gltf_name = self.export_object(
-            #     obj=obj,
-            #     entity_attributes=entity_attributes,
-            #     mesh_name=obj.name,
-            # )
-            # if obj.animation_data:
-            #     gltf_name = self.export_object(
-            #         obj=obj,
-            #         entity_attributes=entity_attributes,
-            #         mesh_name=obj.name,
-            #     )
-            if obj.children:
-                lines.append(self.line_indent + "process ARMATURE childs..")
-                print(self.line_indent + " PING")
-                self.line_indent_level_in()
-                self.select_objects_recusive(obj)
-                gltf_name = self.export_object(
-                    obj=obj,
-                    entity_attributes=entity_attributes,
-                    mesh_name=obj.name,
-                )
-                self.deselect_objects_recusive(obj)
-                # entity_content_temp, lines_temp = self.traverse_objects(
-                #     obj.children,
-                #     allow_childs=True,
-                # )
-                # lines.extend(lines_temp)
-                # entity_content += entity_content_temp
-                self.line_indent_level_out()
-
-            # HERE GEHTS WEITER!!!!
-
+            entity_content += self.export_type_ARMATURE(
+                obj, entity_attributes, transforms, lines
+            )
         elif obj.type == "EMPTY":
-            lines.append(self.line_indent + "empty '{}'".format(obj.name))
-            if obj.animation_data:
-                gltf_name = self.export_object(
-                    obj=obj,
-                    entity_attributes=entity_attributes,
-                    mesh_name=obj.name,
-                )
-            # check for children
-            if obj.children:
-                self.line_indent_level_in()
-                entity_content_temp, lines_temp = self.traverse_objects(
-                    obj.children,
-                    allow_childs=True,
-                )
-                lines.extend(lines_temp)
-                entity_content += entity_content_temp
-                self.line_indent_level_out()
-            elif obj.instance_type is not None:
-                lines.append(self.line_indent + "EMPTY - instance")
-                if not self.print_only:
-                    self.export_object(obj=obj, entity_attributes=entity_attributes)
+            entity_content += self.export_type_EMPTY(
+                obj, entity_attributes, transforms, lines
+            )
         else:
             msg = (
                 self.line_indent
@@ -1127,6 +1170,7 @@ ${entity}
         entity_str = self.export_entity_prepare(
             obj=obj,
             entity_attributes=entity_attributes,
+            transforms=transforms,
         )
         # all things prepared. convert to string...
         entity_str = self.export_entity_finalise(
@@ -1187,12 +1231,14 @@ ${entity}
         lines = []
         entity_attributes = []
         entity_content = ""
+        transforms = self.get_object_coordinates(collection)
 
         # create entity for collection
         print(self.line_indent + "create entity for collection: prepare")
         entity_str = self.export_entity_prepare(
             obj=collection,
             entity_attributes=entity_attributes,
+            transforms=transforms,
         )
         # self.print_only
 
